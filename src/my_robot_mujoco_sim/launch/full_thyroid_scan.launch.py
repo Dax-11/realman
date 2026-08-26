@@ -58,10 +58,17 @@ def generate_launch_description():
     )
 
     return LaunchDescription([
+
         enable_real_arg,
+
         mujoco_real_launch,
+
         realsense_launch,
+
         thyroid_detector_node,
+
         thyroid_arm_control_node,
+
         multi_view_scan_node,
+
     ])

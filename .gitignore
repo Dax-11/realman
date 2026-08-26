@@ -1,7 +1,27 @@
+# 排除所有文件和文件夹
+*
+
+# 不忽略 src目录（保留上传）
+!src/
+!src/**
+
+# 不忽略这个py文件
+!gripper_modbus_final.py
+
 # vscode配置
 .vscode/
-# mujoco日志
+
+# ros2编译产物
+build/
+install/
+log/
+
+# 日志
 MUJOCO_LOG.TXT
+
+# 其他文件
+笔记.md
+
 # python缓存
 __pycache__/
 *.pyc
