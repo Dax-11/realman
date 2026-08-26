@@ -1,0 +1,8 @@
+# vscode配置
+.vscode/
+# mujoco日志
+MUJOCO_LOG.TXT
+# python缓存
+__pycache__/
+*.pyc
+*.log

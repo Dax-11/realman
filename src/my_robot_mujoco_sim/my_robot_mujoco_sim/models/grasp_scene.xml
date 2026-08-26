@@ -1,0 +1,328 @@
+<mujoco model="RM75_sim">
+  <compiler angle="radian" meshdir="RM75_6F/"/>
+
+  <option gravity="0 0 -9.81" timestep="0.002" integrator="implicitfast" iterations="80"/>
+
+  <visual>
+    <headlight diffuse="0.6 0.6 0.6" ambient="0.3 0.3 0.3" specular="0 0 0"/>
+    <rgba haze="0.15 0.25 0.35 1"/>
+    <global azimuth="120" elevation="-20"/>
+  </visual>
+
+  <default>
+    <joint limited="true" damping="10.0" armature="0.10"/>
+    <geom type="mesh" contype="1" conaffinity="1" rgba="0.85 0.85 0.85 1"/>
+    <position kp="80" kv="8" forcelimited="true" forcerange="-200 200"/>
+  </default>
+
+  <asset>
+    <texture type="skybox" builtin="gradient" rgb1="0.3 0.5 0.7" rgb2="0 0 0" width="512" height="3072"/>
+    <texture type="2d" name="groundplane" builtin="checker" mark="edge"
+             rgb1="0.2 0.3 0.4" rgb2="0.1 0.2 0.3" markrgb="0.8 0.8 0.8" width="300" height="300"/>
+    <material name="groundplane" texture="groundplane" texuniform="true" texrepeat="5 5" reflectance="0.2"/>
+
+    <mesh name="base_link" file="base_link.STL"/>
+    <mesh name="Link1"     file="Link1.STL"/>
+    <mesh name="Link2"     file="Link2.STL"/>
+    <mesh name="Link3"     file="Link3.STL"/>
+    <mesh name="Link4"     file="Link4.STL"/>
+    <mesh name="Link5"     file="Link5.STL"/>
+    <mesh name="Link6"     file="Link6.STL"/>
+    <mesh name="Link7"     file="Link7.STL"/>
+    <mesh name="CTAG2F90D" file="CTAG2F90D.stl" scale="0.001 0.001 0.001"/>
+    <mesh name="CTAG2F90D_base_body" file="base_body.stl" scale="0.001 0.001 0.001"/>
+    <mesh name="CTAG2F90D_left_finger" file="left_finger.stl" scale="0.001 0.001 0.001"/>
+    <mesh name="CTAG2F90D_right_finger" file="right_finger.stl" scale="0.001 0.001 0.001"/>
+    <mesh name="CTAG2F90D_left_linkage" file="left_linkage.stl" scale="0.001 0.001 0.001"/>
+    <mesh name="CTAG2F90D_right_linkage" file="right_linkage.stl" scale="0.001 0.001 0.001"/>
+    <mesh name="CTAG2F90D_left_tip" file="left_tip.stl" scale="0.001 0.001 0.001"/>
+    <mesh name="CTAG2F90D_right_tip" file="right_tip.stl" scale="0.001 0.001 0.001"/>
+    <mesh name="FB_base_body" file="fb_base_body.stl" scale="0.001 0.001 0.001"/>
+    <mesh name="FB_left_driver_plate" file="fb_left_driver_plate.stl" scale="0.001 0.001 0.001"/>
+    <mesh name="FB_right_driver_plate" file="fb_right_driver_plate.stl" scale="0.001 0.001 0.001"/>
+    <mesh name="FB_left_output_jaw" file="fb_left_output_jaw.stl" scale="0.001 0.001 0.001"/>
+    <mesh name="FB_right_output_jaw" file="fb_right_output_jaw.stl" scale="0.001 0.001 0.001"/>
+    <mesh name="FB_left_upper_link_front" file="fb_left_upper_link_front.stl" scale="0.001 0.001 0.001"/>
+    <mesh name="FB_left_upper_link_back" file="fb_left_upper_link_back.stl" scale="0.001 0.001 0.001"/>
+    <mesh name="FB_left_lower_link_front" file="fb_left_lower_link_front.stl" scale="0.001 0.001 0.001"/>
+    <mesh name="FB_left_lower_link_back" file="fb_left_lower_link_back.stl" scale="0.001 0.001 0.001"/>
+    <mesh name="FB_right_upper_link_front" file="fb_right_upper_link_front.stl" scale="0.001 0.001 0.001"/>
+    <mesh name="FB_right_upper_link_back" file="fb_right_upper_link_back.stl" scale="0.001 0.001 0.001"/>
+    <mesh name="FB_right_lower_link_front" file="fb_right_lower_link_front.stl" scale="0.001 0.001 0.001"/>
+    <mesh name="FB_right_lower_link_back" file="fb_right_lower_link_back.stl" scale="0.001 0.001 0.001"/>
+    <material name="D435_Black_Acrylic" rgba="0.070360 0.070360 0.070360 1"/>
+    <material name="D435_Cameras_Gray" rgba="0.296138 0.296138 0.296138 1"/>
+    <material name="D435_IR_Emitter_Lens" rgba="0.287440 0.665387 0.327778 1"/>
+    <material name="D435_IR_Lens" rgba="0.035601 0.035601 0.035601 1"/>
+    <material name="D435_IR_Rim" rgba="0.799102 0.806952 0.799103 1"/>
+    <material name="D435_Metal_Casing" rgba="1 1 1 1"/>
+    <material name="D435_RGB_Pupil" rgba="0.087140 0.002866 0.009346 1"/>
+    <mesh name="D435I_0" file="realsense_d435i_assets/d435i_0.obj"/>
+    <mesh name="D435I_1" file="realsense_d435i_assets/d435i_1.obj"/>
+    <mesh name="D435I_2" file="realsense_d435i_assets/d435i_2.obj"/>
+    <mesh name="D435I_3" file="realsense_d435i_assets/d435i_3.obj"/>
+    <mesh name="D435I_4" file="realsense_d435i_assets/d435i_4.obj"/>
+    <mesh name="D435I_5" file="realsense_d435i_assets/d435i_5.obj"/>
+    <mesh name="D435I_6" file="realsense_d435i_assets/d435i_6.obj"/>
+    <mesh name="D435I_7" file="realsense_d435i_assets/d435i_7.obj"/>
+    <mesh name="D435I_8" file="realsense_d435i_assets/d435i_8.obj"/>
+  </asset>
+
+  <worldbody>
+    <light pos="0 0 3" dir="0 0 -1" directional="true" castshadow="true"/>
+    <geom name="floor" size="0 0 0.05" type="plane" material="groundplane"/>
+    <camera name="overview" pos="1.3 -1.1 0.95" xyaxes="0.72 0.69 0 -0.34 0.35 0.88"/>
+    <camera name="front_close" pos="0.75 -0.25 0.75" xyaxes="0.32 0.95 0 -0.57 0.19 0.80"/>
+    <camera name="table_cam" pos="-0.32 0 1.22" xyaxes="1 0 0 0 1 0" fovy="58"/>
+
+    <body name="table" pos="-0.32 0 0.2">
+      <geom name="table_top" type="box" size="0.15 0.25 0.2" rgba="0.45 0.34 0.22 1" contype="1" conaffinity="1"/>
+    </body>
+
+    <body name="block" pos="-0.32 0 0.42">
+      <freejoint name="block_joint"/>
+      <geom name="block" type="box" size="0.0175 0.0175 0.0175" mass="0.08" rgba="0.9 0.1 0.1 1"
+            condim="3" friction="1.0 0.005 0.0001" contype="1" conaffinity="1"/>
+    </body>
+
+    <body name="stand" pos="0 0 0.125">
+      <geom type="cylinder" size="0.12 0.125" rgba="0.2 0.2 0.2 1"/>
+    </body>
+
+    <body name="base_link" pos="0 0 0.25000" euler="0 0 180">
+      <inertial pos="0.00043296 3.5291E-05 0.059942" mass="0.84105"
+                diaginertia="0.0017261 0.0017099 0.00090402"/>
+      <geom mesh="base_link"/>
+
+      <body name="Link1" pos="0 0 0.2405" quat="0.707107 -0.707107 0 0">
+        <inertial pos="0.00024100 -0.01327300 -0.00995000" mass="1.574"
+                  fullinertia="2.48754050e-03 2.32102065e-03 1.45053902e-03 9.66809982e-06 -7.90537330e-06 1.79410435e-04"/>
+        <joint name="joint1" axis="0 -1 0" range="-3.107 3.107"/>
+        <geom mesh="Link1"/>
+
+        <body name="Link2" pos="0 0 0" quat="0.707107 0.707107 0 0">
+          <inertial pos="-0.00035700 -0.10679800 0.00532900" mass="1.217"
+                    fullinertia="3.48877216e-03 8.92712235e-04 3.43874071e-03 2.91242026e-06 -5.61228530e-06 -5.84104002e-04"/>
+          <joint name="joint2" axis="0 1 0" range="-2.269 2.269"/>
+          <geom mesh="Link2"/>
+
+          <body name="Link3" pos="0 0 0.256" quat="0.707107 -0.707107 0 0">
+            <inertial pos="0.00000300 -0.01039800 -0.01132400" mass="1.11"
+                      fullinertia="1.83668397e-03 1.49889639e-03 1.06254556e-03 2.25737466e-06 -4.21870892e-06 3.71571167e-05"/>
+            <joint name="joint3" axis="0 -1 0" range="-3.107 3.107"/>
+            <geom mesh="Link3"/>
+
+            <body name="Link4" pos="0 0 0" quat="0.707107 0.707107 0 0">
+              <inertial pos="-0.00000500 -0.08465800 0.00474700" mass="0.685"
+                        fullinertia="1.27976098e-03 3.73005187e-04 1.25350176e-03 -5.29046350e-07 -6.31258475e-07 -2.32227995e-04"/>
+              <joint name="joint4" axis="0 1 0" range="-2.356 2.356"/>
+              <geom mesh="Link4"/>
+
+              <body name="Link5" pos="0 0 0.21" quat="0.707107 -0.707107 0 0">
+                <inertial pos="0.00007800 -0.01293700 -0.00878100" mass="0.619"
+                          fullinertia="6.27286875e-04 5.42436644e-04 3.70259699e-04 1.63637577e-06 -1.34496424e-06 3.49942743e-05"/>
+                <joint name="joint5" axis="0 -1 0" range="-3.107 3.107"/>
+                <geom mesh="Link5"/>
+
+                <body name="Link6" pos="0 0 0" quat="0.707107 0.707107 0 0">
+                  <inertial pos="-0.00001400 -0.07852400 0.00281900" mass="0.602"
+                            fullinertia="7.83139867e-04 2.89975932e-04 7.66317699e-04 -1.40199728e-07 -4.67758532e-07 -1.20427212e-04"/>
+                  <joint name="joint6" axis="0 1 0" range="-2.234 2.234"/>
+                  <geom mesh="Link6"/>
+
+                  <body name="Link7" pos="0 0 0.1725">
+                    <inertial pos="-0.00050600 0.00025500 -0.01080100" mass="0.107"
+                              fullinertia="3.84282510e-05 3.49098128e-05 6.03156465e-05 -3.14980621e-06 -1.14212258e-07 9.32947150e-08"/>
+                    <joint name="joint7" axis="0 0 1" range="-6.283 6.283"/>
+                    <geom mesh="Link7"/>
+                    <site name="end_effector" pos="0 0 -0.06" size="0.001" rgba="1 0 0 0"/>
+
+                    <body name="tool_mount" pos="0 0 -0.028">
+                      <inertial pos="-0.00042600 0.00023700 -0.02722300" mass="0.248"
+                                fullinertia="1.25039321e-04 1.20780245e-04 1.22561064e-04 -3.80603858e-06 1.40805550e-06 -7.12059048e-07"/>
+                      <geom name="camera_plate_round_end" type="cylinder" size="0.030 0.002425"
+                            pos="0 0 0.030425" rgba="0.76 0.76 0.78 1" contype="0" conaffinity="0"/>
+
+                      <body name="camera_plate_assembly" pos="0 0 0"
+                            quat="0.99999355 -0.00145948 0.00180964 0.00273807">
+                        <geom name="camera_plate_stem" type="box" size="0.0405 0.0065 0.002425"
+                               pos="-0.0405 0 0.030425"
+                               rgba="0.76 0.76 0.78 1" contype="0" conaffinity="0"/>
+                        <geom name="camera_plate_head" type="box" size="0.01225 0.045 0.002425"
+                               pos="-0.09325 0 0.030425"
+                               rgba="0.76 0.76 0.78 1" contype="0" conaffinity="0"/>
+
+                        <body name="camera_d435_mount" pos="-0.09325 0 0.030425">
+                          <body name="camera_d435" pos="0 0 0.028" quat="0.707107 0 0 0.707107">
+                            <inertial pos="0.00011360 -0.00026619 0.01466059" mass="0.072"
+                                      diaginertia="7.17510000e-06 5.28438000e-05 5.30491800e-05"/>
+                            <geom mesh="D435I_0" material="D435_IR_Lens" contype="0" conaffinity="0"/>
+                            <geom mesh="D435I_1" material="D435_IR_Emitter_Lens" contype="0" conaffinity="0"/>
+                            <geom mesh="D435I_2" material="D435_IR_Rim" contype="0" conaffinity="0"/>
+                            <geom mesh="D435I_3" material="D435_IR_Lens" contype="0" conaffinity="0"/>
+                            <geom mesh="D435I_4" material="D435_Cameras_Gray" contype="0" conaffinity="0"/>
+                            <geom mesh="D435I_5" material="D435_Black_Acrylic" contype="0" conaffinity="0"/>
+                            <geom mesh="D435I_6" material="D435_Black_Acrylic" contype="0" conaffinity="0"/>
+                            <geom mesh="D435I_7" material="D435_RGB_Pupil" contype="0" conaffinity="0"/>
+                            <geom mesh="D435I_8" material="D435_Metal_Casing" contype="0" conaffinity="0"/>
+                          </body>
+                        </body>
+                      </body>
+
+                      <body name="gripper_frame" pos="0 0 0" quat="0.707107 0 0 -0.707107">
+                        <inertial pos="0.00400193 0.00150733 0.08371353" mass="0.67"
+                                  diaginertia="1.21459828e-03 1.41622659e-03 2.00269984e-03"/>
+                        <body name="fourbar_cad_frame" pos="-0.08081041 0.03895615 0.03285"
+                              quat="0.707107 0.707107 0 0">
+                          <geom name="fb_base_visual" mesh="FB_base_body" contype="0" conaffinity="0" rgba="0.25 0.25 0.25 1"/>
+
+                          <body name="gripper_close_driver" pos="0.080810 0.142563 0.038956">
+                            <inertial pos="0 0 0" mass="0.001" diaginertia="1e-6 1e-6 1e-6"/>
+                            <joint name="gripper_close_joint" type="hinge" axis="0 0 1"
+                                   range="0 1.1" damping="0.5" armature="0.01"/>
+                          </body>
+
+                          <body name="gripper_left_finger" pos="0.024452 0.159446 0.038956">
+                            <joint name="gripper_left_x" type="slide" axis="1 0 0" limited="true" range="-0.005 0.070" damping="0.02" armature="0.0001"/>
+                            <joint name="gripper_left_y" type="slide" axis="0 1 0" limited="true" range="-0.005 0.030" damping="0.02" armature="0.0001"/>
+                            <joint name="gripper_left_theta" type="hinge" axis="0 0 1" limited="true" range="-0.05 0.50" damping="0.02" armature="0.0001"/>
+                            <inertial pos="0 0 0" mass="0.08" diaginertia="8e-6 8e-6 8e-6"/>
+                            <geom name="fb_left_driver_visual" mesh="FB_left_driver_plate" contype="0" conaffinity="0" rgba="0.18 0.18 0.18 1"/>
+                            <body name="left_output_jaw_body" pos="-0.014142 -0.016883 0">
+                              <geom name="fb_left_output_visual" mesh="FB_left_output_jaw" contype="1" conaffinity="1" rgba="0.18 0.18 0.18 1"/>
+                            </body>
+                            <site name="left_jaw_upper" pos="0 0 0" size="0.0012" rgba="0 1 1 0"/>
+                            <site name="left_jaw_lower" pos="-0.014142 -0.016883 0" size="0.0012" rgba="0 1 1 0"/>
+                          </body>
+
+                          <body name="gripper_right_finger" pos="0.137169 0.159427 0.038956">
+                            <joint name="gripper_right_x" type="slide" axis="1 0 0" limited="true" range="-0.070 0.005" damping="0.02" armature="0.0001"/>
+                            <joint name="gripper_right_y" type="slide" axis="0 1 0" limited="true" range="-0.005 0.030" damping="0.02" armature="0.0001"/>
+                            <joint name="gripper_right_theta" type="hinge" axis="0 0 1" limited="true" range="-0.50 0.05" damping="0.02" armature="0.0001"/>
+                            <inertial pos="0 0 0" mass="0.08" diaginertia="8e-6 8e-6 8e-6"/>
+                            <geom name="fb_right_driver_visual" mesh="FB_right_driver_plate" contype="0" conaffinity="0" rgba="0.18 0.18 0.18 1"/>
+                            <body name="right_output_jaw_body" pos="0.014141 -0.016852 0">
+                              <geom name="fb_right_output_visual" mesh="FB_right_output_jaw" contype="1" conaffinity="1" rgba="0.18 0.18 0.18 1"/>
+                            </body>
+                            <site name="right_jaw_upper" pos="0 0 0" size="0.0012" rgba="0 1 1 0"/>
+                            <site name="right_jaw_lower" pos="0.014141 -0.016852 0" size="0.0012" rgba="0 1 1 0"/>
+                          </body>
+
+                          <body name="left_upper_link" pos="0.064810 0.122050 0.038956">
+                            <inertial pos="0 0 0" mass="0.03" diaginertia="3e-6 3e-6 3e-6"/>
+                            <joint name="left_upper_hinge" type="hinge" axis="0 0 1" limited="true" range="-1.2 0.1" damping="2"/>
+                            <geom mesh="FB_left_upper_link_front" contype="0" conaffinity="0" rgba="0.12 0.12 0.12 1"/>
+                            <geom mesh="FB_left_upper_link_back" contype="0" conaffinity="0" rgba="0.12 0.12 0.12 1"/>
+                            <site name="left_upper_link_tip" pos="-0.040358 0.037396 0" size="0.0012" rgba="1 1 0 0"/>
+                          </body>
+
+                          <body name="left_lower_link" pos="0.05059 0.105235 0.038956">
+                            <inertial pos="0 0 0" mass="0.03" diaginertia="3e-6 3e-6 3e-6"/>
+                            <joint name="left_lower_hinge" type="hinge" axis="0 0 1" limited="true" range="-1.2 0.1" damping="2"/>
+                            <geom mesh="FB_left_lower_link_front" pos="-0.01745 0.01617 0"
+                                  contype="0" conaffinity="0" rgba="0.12 0.12 0.12 1"/>
+                            <geom mesh="FB_left_lower_link_back" pos="-0.01745 0.01617 0"
+                                  contype="0" conaffinity="0" rgba="0.12 0.12 0.12 1"/>
+                            <site name="left_lower_link_tip" pos="-0.022749 0.021028 0" size="0.0012" rgba="1 1 0 0"/>
+                          </body>
+
+                          <body name="right_upper_link" pos="0.096810 0.122050 0.038956">
+                            <inertial pos="0 0 0" mass="0.03" diaginertia="3e-6 3e-6 3e-6"/>
+                            <joint name="right_upper_hinge" type="hinge" axis="0 0 1" limited="true" range="-0.1 1.2" damping="2"/>
+                            <geom mesh="FB_right_upper_link_front" contype="0" conaffinity="0" rgba="0.12 0.12 0.12 1"/>
+                            <geom mesh="FB_right_upper_link_back" contype="0" conaffinity="0" rgba="0.12 0.12 0.12 1"/>
+                            <site name="right_upper_link_tip" pos="0.040359 0.037377 0" size="0.0012" rgba="1 1 0 0"/>
+                          </body>
+
+                          <body name="right_lower_link" pos="0.111563 0.105235 0.038956">
+                            <inertial pos="0 0 0" mass="0.03" diaginertia="3e-6 3e-6 3e-6"/>
+                            <joint name="right_lower_hinge" type="hinge" axis="0 0 1" limited="true" range="-0.1 1.2" damping="2"/>
+                            <geom mesh="FB_right_lower_link_front" pos="0.01745 0.01617 0"
+                                  contype="0" conaffinity="0" rgba="0.12 0.12 0.12 1"/>
+                            <geom mesh="FB_right_lower_link_back" pos="0.01745 0.01617 0"
+                                  contype="0" conaffinity="0" rgba="0.12 0.12 0.12 1"/>
+                            <site name="right_lower_link_tip" pos="0.022747 0.021073 0" size="0.0012" rgba="1 1 0 0"/>
+                          </body>
+                        </body>
+
+                        <site name="gripper_tcp" pos="0 0 0.205" size="0.003" rgba="1 1 0 0.7"/>
+
+                        <site name="d435_optical_center_rs485_y"
+                              pos="0.03484355 -0.09054684 0.05363399"
+                              size="0.0035" rgba="0 1 0 0"/>
+
+                        <body name="camera_calib_frame" pos="0.03484355 -0.09054684 0.05363399"
+                              quat="0.70516611 -0.00231162 0.00024760 0.70903833">
+                          <site name="camera_calib_origin" pos="0 0 0" size="0.005" rgba="0 1 1 1"/>
+                          <camera name="d435_view" pos="0 0 0" quat="0 0 1 0" fovy="58"/>
+                        </body>
+                      </body>
+                    </body>
+                  </body>
+                </body>
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+
+  <equality>
+    <joint name="eq_left_x"      joint1="gripper_left_x"      joint2="gripper_close_joint"
+           polycoef="0 0.037396 0.020179 -0.006233 -0.001682"
+           solref="0.005 1" solimp="0.98 0.999 0.001"/>
+    <joint name="eq_left_y"      joint1="gripper_left_y"      joint2="gripper_close_joint"
+           polycoef="0 0.040358 -0.018698 -0.006726 0.001558"
+           solref="0.005 1" solimp="0.98 0.999 0.001"/>
+    <joint name="eq_left_theta"  joint1="gripper_left_theta"  joint2="gripper_close_joint"
+           polycoef="0 0 0 0 0"
+           solref="0.005 1" solimp="0.98 0.999 0.001"/>
+
+    <joint name="eq_right_x"     joint1="gripper_right_x"     joint2="gripper_close_joint"
+           polycoef="0 -0.037377 -0.020180 0.006230 0.001682"
+           solref="0.005 1" solimp="0.98 0.999 0.001"/>
+    <joint name="eq_right_y"     joint1="gripper_right_y"     joint2="gripper_close_joint"
+           polycoef="0 0.040359 -0.018689 -0.006727 0.001557"
+           solref="0.005 1" solimp="0.98 0.999 0.001"/>
+    <joint name="eq_right_theta" joint1="gripper_right_theta" joint2="gripper_close_joint"
+           polycoef="0 0 0 0 0"
+           solref="0.005 1" solimp="0.98 0.999 0.001"/>
+
+    <joint name="eq_left_upper_hinge"  joint1="left_upper_hinge"  joint2="gripper_close_joint"
+           polycoef="0 -1.0 0 0 0"
+           solref="0.005 1" solimp="0.98 0.999 0.001"/>
+    <joint name="eq_left_lower_hinge"  joint1="left_lower_hinge"  joint2="gripper_close_joint"
+           polycoef="0 -1.0 0 0 0"
+           solref="0.005 1" solimp="0.98 0.999 0.001"/>
+
+    <joint name="eq_right_upper_hinge" joint1="right_upper_hinge" joint2="gripper_close_joint"
+           polycoef="0 1.0 0 0 0"
+           solref="0.005 1" solimp="0.98 0.999 0.001"/>
+    <joint name="eq_right_lower_hinge" joint1="right_lower_hinge" joint2="gripper_close_joint"
+           polycoef="0 1.0 0 0 0"
+           solref="0.005 1" solimp="0.98 0.999 0.001"/>
+  </equality>
+
+  <actuator>
+    <position name="act1" joint="joint1" kp="2000" kv="400" ctrlrange="-3.107 3.107"/>
+    <position name="act2" joint="joint2" kp="2000" kv="400" ctrlrange="-2.269 2.269"/>
+    <position name="act3" joint="joint3" kp="2000" kv="400" ctrlrange="-3.107 3.107"/>
+    <position name="act4" joint="joint4" kp="1500" kv="300" ctrlrange="-2.356 2.356"/>
+    <position name="act5" joint="joint5" kp="500"  kv="100" ctrlrange="-3.107 3.107"/>
+    <position name="act6" joint="joint6" kp="500"  kv="100" ctrlrange="-2.234 2.234"/>
+    <position name="act7" joint="joint7" kp="300"  kv="60"  ctrlrange="-6.283 6.283"/>
+    <position name="gripper_act" joint="gripper_close_joint"
+              kp="400" kv="40" ctrlrange="0 0.91" forcerange="-500 500"/>
+  </actuator>
+
+  <keyframe>
+    <key name="home" qpos="0 -0.52 0 1.05 0 0.52 0  0  0 0 0  0 0 0  0 0 0 0" ctrl="0 -0.52 0 1.05 0 0.52 0  0"/>
+  </keyframe>
+
+  <sensor>
+    <force name="tcp_force_sensor" site="gripper_tcp"/>
+    <torque name="tcp_torque_sensor" site="gripper_tcp"/>
+  </sensor>
+
+</mujoco>

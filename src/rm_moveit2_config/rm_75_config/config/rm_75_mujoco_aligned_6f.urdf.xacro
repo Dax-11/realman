@@ -1,0 +1,371 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="rm_75_description">
+  <xacro:arg name="initial_positions_file" default="initial_positions.yaml" />
+  <xacro:arg name="link7_type" default="Link7_6f" />
+
+  <!-- 复用官方 RM75 机械臂本体关节链，避免改动运动学和规划链。 -->
+  <xacro:include filename="$(find rm_description)/urdf/rm_75.urdf.xacro">
+    link7_type:=$(arg link7_type)
+  </xacro:include>
+
+  <!-- 继续复用官方 ros2_control 定义，保证 MoveIt / rm_control / rm_driver 链路不变。 -->
+  <xacro:include filename="rm_75_description.ros2_control.xacro" />
+  <xacro:rm_75_description_ros2_control
+    name="FakeSystem"
+    initial_positions_file="$(arg initial_positions_file)"/>
+
+  <!-- ===================== MuJoCo 对齐用材质 ===================== -->
+  <material name="MujocoStandDark">
+    <color rgba="0.2 0.2 0.2 1.0"/>
+  </material>
+  <material name="MujocoPlateSilver">
+    <color rgba="0.76 0.76 0.78 1.0"/>
+  </material>
+  <material name="MujocoBoltGray">
+    <color rgba="0.55 0.55 0.58 1.0"/>
+  </material>
+  <material name="MujocoDarkGray">
+    <color rgba="0.25 0.25 0.25 1.0"/>
+  </material>
+  <material name="MujocoNearBlack">
+    <color rgba="0.18 0.18 0.18 1.0"/>
+  </material>
+  <material name="MujocoLinkBlack">
+    <color rgba="0.12 0.12 0.12 1.0"/>
+  </material>
+  <material name="D435_Black_Acrylic">
+    <color rgba="0.070360 0.070360 0.070360 1.0"/>
+  </material>
+  <material name="D435_Cameras_Gray">
+    <color rgba="0.296138 0.296138 0.296138 1.0"/>
+  </material>
+  <material name="D435_IR_Emitter_Lens">
+    <color rgba="0.287440 0.665387 0.327778 1.0"/>
+  </material>
+  <material name="D435_IR_Lens">
+    <color rgba="0.035601 0.035601 0.035601 1.0"/>
+  </material>
+  <material name="D435_IR_Rim">
+    <color rgba="0.799102 0.806952 0.799103 1.0"/>
+  </material>
+  <material name="D435_Metal_Casing">
+    <color rgba="1.0 1.0 1.0 1.0"/>
+  </material>
+  <material name="D435_RGB_Pupil">
+    <color rgba="0.087140 0.002866 0.009346 1.0"/>
+  </material>
+
+  <!-- ===================== MuJoCo 对齐用可视化附件 ===================== -->
+  <!-- 说明：
+       1. 这里只补“固定可视化附件”，不改 joint1~joint7 的关节定义。
+       2. 这样同一份 /joint_states 下，MoveIt 和 MuJoCo 的姿态会一致，
+          同时又不会破坏真实机械臂的规划和执行链路。
+       3. 所有新增 link 默认只有 visual，没有 collision，避免影响 MoveIt 碰撞规划。 -->
+
+  <!-- 对齐 MuJoCo 世界中的底座圆台：
+       MuJoCo 里 stand 在 world z=0.004，base_link 在 world z=0.008，
+       所以相对 base_link 是 -0.004。 -->
+  <link name="mujoco_display_stand">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.12" length="0.008"/>
+      </geometry>
+      <material name="MujocoStandDark"/>
+    </visual>
+  </link>
+  <joint name="mujoco_display_stand_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="mujoco_display_stand"/>
+    <origin xyz="0 0 -0.004" rpy="0 0 0"/>
+  </joint>
+
+  <!-- 对齐 MuJoCo 中 Link7 之后人为挂上的 tool_mount。
+       这里保留 MuJoCo 当前使用的 -0.028 偏移，和 sim_scene.xml 一致。 -->
+  <link name="mujoco_tool_mount">
+    <visual>
+      <origin xyz="0 0 0.030425" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.03" length="0.00485"/>
+      </geometry>
+      <material name="MujocoPlateSilver"/>
+    </visual>
+  </link>
+  <joint name="mujoco_tool_mount_joint" type="fixed">
+    <parent link="Link7"/>
+    <child link="mujoco_tool_mount"/>
+    <origin xyz="0 0 -0.028" rpy="0 0 0"/>
+  </joint>
+
+  <!-- 相机安装板。MuJoCo 里有一个极小的 quat 微调，这里忽略它，
+       因为它只影响很细微的装配姿态，不影响肉眼显示对齐。 -->
+  <link name="mujoco_camera_plate_assembly">
+    <visual>
+      <origin xyz="0.0405 0 0.030425" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.081 0.013 0.00485"/>
+      </geometry>
+      <material name="MujocoPlateSilver"/>
+    </visual>
+    <visual>
+      <origin xyz="0.09325 0 0.030425" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.0245 0.09 0.00485"/>
+      </geometry>
+      <material name="MujocoPlateSilver"/>
+    </visual>
+  </link>
+  <joint name="mujoco_camera_plate_assembly_joint" type="fixed">
+    <parent link="mujoco_tool_mount"/>
+    <child link="mujoco_camera_plate_assembly"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint>
+
+  <!-- 对齐 MuJoCo 里的 D435 安装体。最终位置 = 0.09325 0 0.030425 + 0 0 0.028。 -->
+  <link name="mujoco_camera_d435">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 1.5708"/>
+      <geometry>
+        <mesh filename="package://my_robot_mujoco_sim/models/RM75_6F/realsense_d435i_assets/d435i_0.obj"/>
+      </geometry>
+      <material name="D435_IR_Lens"/>
+    </visual>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 1.5708"/>
+      <geometry>
+        <mesh filename="package://my_robot_mujoco_sim/models/RM75_6F/realsense_d435i_assets/d435i_1.obj"/>
+      </geometry>
+      <material name="D435_IR_Emitter_Lens"/>
+    </visual>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 1.5708"/>
+      <geometry>
+        <mesh filename="package://my_robot_mujoco_sim/models/RM75_6F/realsense_d435i_assets/d435i_2.obj"/>
+      </geometry>
+      <material name="D435_IR_Rim"/>
+    </visual>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 1.5708"/>
+      <geometry>
+        <mesh filename="package://my_robot_mujoco_sim/models/RM75_6F/realsense_d435i_assets/d435i_3.obj"/>
+      </geometry>
+      <material name="D435_IR_Lens"/>
+    </visual>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 1.5708"/>
+      <geometry>
+        <mesh filename="package://my_robot_mujoco_sim/models/RM75_6F/realsense_d435i_assets/d435i_4.obj"/>
+      </geometry>
+      <material name="D435_Cameras_Gray"/>
+    </visual>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 1.5708"/>
+      <geometry>
+        <mesh filename="package://my_robot_mujoco_sim/models/RM75_6F/realsense_d435i_assets/d435i_5.obj"/>
+      </geometry>
+      <material name="D435_Black_Acrylic"/>
+    </visual>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 1.5708"/>
+      <geometry>
+        <mesh filename="package://my_robot_mujoco_sim/models/RM75_6F/realsense_d435i_assets/d435i_6.obj"/>
+      </geometry>
+      <material name="D435_Black_Acrylic"/>
+    </visual>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 1.5708"/>
+      <geometry>
+        <mesh filename="package://my_robot_mujoco_sim/models/RM75_6F/realsense_d435i_assets/d435i_7.obj"/>
+      </geometry>
+      <material name="D435_RGB_Pupil"/>
+    </visual>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 1.5708"/>
+      <geometry>
+        <mesh filename="package://my_robot_mujoco_sim/models/RM75_6F/realsense_d435i_assets/d435i_8.obj"/>
+      </geometry>
+      <material name="D435_Metal_Casing"/>
+    </visual>
+  </link>
+  <joint name="mujoco_camera_d435_joint" type="fixed">
+    <parent link="mujoco_camera_plate_assembly"/>
+    <child link="mujoco_camera_d435"/>
+    <origin xyz="0.09325 0 0.058425" rpy="0 0 0"/>
+  </joint>
+
+  <!-- 对齐 MuJoCo 的夹爪本体姿态：
+       quat="0.707107 0 0 -0.707107" 等价于绕 Z 轴 -90 度。 -->
+  <link name="mujoco_gripper_frame"/>
+  <joint name="mujoco_gripper_frame_joint" type="fixed">
+    <parent link="mujoco_tool_mount"/>
+    <child link="mujoco_gripper_frame"/>
+    <origin xyz="0 0 0" rpy="0 0 -1.5708"/>
+  </joint>
+
+  <!-- CAD 帧：
+       quat="0.707107 0.707107 0 0" 等价于绕 X 轴 +90 度。 -->
+  <link name="mujoco_fourbar_cad_frame">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://my_robot_mujoco_sim/models/RM75_6F/fb_base_body.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="MujocoDarkGray"/>
+    </visual>
+  </link>
+  <joint name="mujoco_fourbar_cad_frame_joint" type="fixed">
+    <parent link="mujoco_gripper_frame"/>
+    <child link="mujoco_fourbar_cad_frame"/>
+    <origin xyz="-0.08081041 0.03895615 0.03285" rpy="1.5708 0 0"/>
+  </joint>
+
+  <!-- 以下四连杆和指爪全部按 MuJoCo home 姿态固定展开。
+       因为 q=0 时所有从动关节都在参考位置，所以这里用 fixed joint 即可对齐显示。 -->
+  <link name="mujoco_gripper_left_finger">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://my_robot_mujoco_sim/models/RM75_6F/fb_left_driver_plate.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="MujocoNearBlack"/>
+    </visual>
+  </link>
+  <joint name="mujoco_gripper_left_finger_joint" type="fixed">
+    <parent link="mujoco_fourbar_cad_frame"/>
+    <child link="mujoco_gripper_left_finger"/>
+    <origin xyz="0.024452 0.159446 0.038956" rpy="0 0 0"/>
+  </joint>
+
+  <link name="mujoco_left_output_jaw_body">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://my_robot_mujoco_sim/models/RM75_6F/fb_left_output_jaw.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="MujocoNearBlack"/>
+    </visual>
+  </link>
+  <joint name="mujoco_left_output_jaw_body_joint" type="fixed">
+    <parent link="mujoco_gripper_left_finger"/>
+    <child link="mujoco_left_output_jaw_body"/>
+    <origin xyz="-0.014142 -0.016883 0" rpy="0 0 0"/>
+  </joint>
+
+  <link name="mujoco_gripper_right_finger">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://my_robot_mujoco_sim/models/RM75_6F/fb_right_driver_plate.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="MujocoNearBlack"/>
+    </visual>
+  </link>
+  <joint name="mujoco_gripper_right_finger_joint" type="fixed">
+    <parent link="mujoco_fourbar_cad_frame"/>
+    <child link="mujoco_gripper_right_finger"/>
+    <origin xyz="0.137169 0.159427 0.038956" rpy="0 0 0"/>
+  </joint>
+
+  <link name="mujoco_right_output_jaw_body">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://my_robot_mujoco_sim/models/RM75_6F/fb_right_output_jaw.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="MujocoNearBlack"/>
+    </visual>
+  </link>
+  <joint name="mujoco_right_output_jaw_body_joint" type="fixed">
+    <parent link="mujoco_gripper_right_finger"/>
+    <child link="mujoco_right_output_jaw_body"/>
+    <origin xyz="0.014141 -0.016852 0" rpy="0 0 0"/>
+  </joint>
+
+  <link name="mujoco_left_upper_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://my_robot_mujoco_sim/models/RM75_6F/fb_left_upper_link_front.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="MujocoLinkBlack"/>
+    </visual>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://my_robot_mujoco_sim/models/RM75_6F/fb_left_upper_link_back.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="MujocoLinkBlack"/>
+    </visual>
+  </link>
+  <joint name="mujoco_left_upper_link_joint" type="fixed">
+    <parent link="mujoco_fourbar_cad_frame"/>
+    <child link="mujoco_left_upper_link"/>
+    <origin xyz="0.064810 0.122050 0.038956" rpy="0 0 0"/>
+  </joint>
+
+  <link name="mujoco_left_lower_link">
+    <visual>
+      <origin xyz="-0.01745 0.01617 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://my_robot_mujoco_sim/models/RM75_6F/fb_left_lower_link_front.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="MujocoLinkBlack"/>
+    </visual>
+    <visual>
+      <origin xyz="-0.01745 0.01617 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://my_robot_mujoco_sim/models/RM75_6F/fb_left_lower_link_back.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="MujocoLinkBlack"/>
+    </visual>
+  </link>
+  <joint name="mujoco_left_lower_link_joint" type="fixed">
+    <parent link="mujoco_fourbar_cad_frame"/>
+    <child link="mujoco_left_lower_link"/>
+    <origin xyz="0.05059 0.105235 0.038956" rpy="0 0 0"/>
+  </joint>
+
+  <link name="mujoco_right_upper_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://my_robot_mujoco_sim/models/RM75_6F/fb_right_upper_link_front.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="MujocoLinkBlack"/>
+    </visual>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://my_robot_mujoco_sim/models/RM75_6F/fb_right_upper_link_back.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="MujocoLinkBlack"/>
+    </visual>
+  </link>
+  <joint name="mujoco_right_upper_link_joint" type="fixed">
+    <parent link="mujoco_fourbar_cad_frame"/>
+    <child link="mujoco_right_upper_link"/>
+    <origin xyz="0.096810 0.122050 0.038956" rpy="0 0 0"/>
+  </joint>
+
+  <link name="mujoco_right_lower_link">
+    <visual>
+      <origin xyz="0.01745 0.01617 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://my_robot_mujoco_sim/models/RM75_6F/fb_right_lower_link_front.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="MujocoLinkBlack"/>
+    </visual>
+    <visual>
+      <origin xyz="0.01745 0.01617 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://my_robot_mujoco_sim/models/RM75_6F/fb_right_lower_link_back.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="MujocoLinkBlack"/>
+    </visual>
+  </link>
+  <joint name="mujoco_right_lower_link_joint" type="fixed">
+    <parent link="mujoco_fourbar_cad_frame"/>
+    <child link="mujoco_right_lower_link"/>
+    <origin xyz="0.111563 0.105235 0.038956" rpy="0 0 0"/>
+  </joint>
+</robot>
